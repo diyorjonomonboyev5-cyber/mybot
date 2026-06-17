@@ -8,26 +8,16 @@ OPENAI_API_KEY = os.getenv("sk-proj-dSpeQwaA4kXWIL7KwPCGTAyyyfFYI7-IeHBOrtun7bRl
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-# START
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "Salom 🤖\n"
-        "💬 Chat: oddiy yoz\n"
-        "🎨 Rasm: /img prompt yoz"
-    )
+    await update.message.reply_text("🤖 Bot ishlayapti!")
 
-# 💬 CHAT
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
-
     res = client.responses.create(
         model="gpt-4.1-mini",
-        input=text
+        input=update.message.text
     )
-
     await update.message.reply_text(res.output_text)
 
-# 🎨 IMAGE
 async def img(update: Update, context: ContextTypes.DEFAULT_TYPE):
     prompt = " ".join(context.args)
 
@@ -41,8 +31,7 @@ async def img(update: Update, context: ContextTypes.DEFAULT_TYPE):
         size="1024x1024"
     )
 
-    image_url = result.data[0].url
-    await update.message.reply_photo(photo=image_url, caption="Tayyor 🎨")
+    await update.message.reply_photo(photo=result.data[0].url)
 
 app = ApplicationBuilder().token(BOT_TOKEN).build()
 
